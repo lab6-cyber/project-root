@@ -1,0 +1,49 @@
+services:
+  gateway:
+    build: ../gateway
+    ports:
+      - "8080:80"
+    depends_on:
+      - frontend
+      - auth-service
+      - products-service
+      - orders-service
+
+  frontend:
+    build: ../frontend
+
+  auth-service:
+    build: ../services/auth-service
+    environment:
+      - PORT=3001
+      - DATABASE_URL=postgres://user:pass@postgres:5432/auth_db
+      - JWT_SECRET=secret
+      - JWT_REFRESH_SECRET=refreshsecret
+    depends_on:
+      - postgres
+
+  products-service:
+    build: ../services/products-service
+    environment:
+      - PORT=3002
+      - DATABASE_URL=postgres://user:pass@postgres:5432/products_db
+    depends_on:
+      - postgres
+
+  orders-service:
+    build: ../services/orders-service
+    environment:
+      - PORT=3003
+      - DATABASE_URL=postgres://user:pass@postgres:5432/orders_db
+      - PRODUCTS_SERVICE_URL=http://products-service:3002
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
