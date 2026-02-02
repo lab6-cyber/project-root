@@ -1,0 +1,30 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Test Auth
+        run: |
+          cd services/auth-service
+          npm install
+          npm test
+      - name: Test Products
+        run: |
+          cd services/products-service
+          npm install
+          npm test
+      - name: Test Frontend
+        run: |
+          cd frontend
+          npm install
+          npm test
