@@ -13,4 +13,3 @@
 |-> [Products Service] -> [Products DB]
 |-> [Orders Service] -> [Orders DB]
 
-[Открыть архитектурную схему (Draw.io)](./docs/architecture.drawio)
