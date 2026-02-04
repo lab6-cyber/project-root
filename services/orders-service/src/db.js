@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -21,5 +22,6 @@ const connectWithRetry = async () => {
     }
     throw new Error('Could not connect to database after retries');
 };
+
 
 module.exports = { pool, connectWithRetry };
