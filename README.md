@@ -40,10 +40,18 @@
 ### 2. Локальный запуск (Dev Mode)
 Если вы хотите запустить каждый сервис вручную для разработки:
 
-1. **База данных**: Запустите только Postgres через Docker:
+1. **База данных**: 
+Запустите только Postgres через Docker:
    ```bash
    docker run --name moda-db -e POSTGRES_PASSWORD=pass -p 5432:5432 -d postgres:15
    ```
+Создайте отдельно базы:
+   ```bash
+   docker exec -it moda-db psql -U postgres -c "CREATE DATABASE auth_db;"
+   docker exec -it moda-db psql -U postgres -c "CREATE DATABASE products_db;"
+   docker exec -it moda-db psql -U postgres -c "CREATE DATABASE orders_db;"
+   ```
+   
 2. **Сервисы**: В каждой папке (`services/auth-service`, `services/products-service`, `services/orders-service`) выполните:
    ```bash
    npm install
